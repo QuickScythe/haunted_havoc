@@ -13,6 +13,7 @@ public class ServerInteractionListener implements Listener {
         if (!Utils.getOccasion().started() && !Utils.getOccasion().finished()) {
             if (ShadowUtils.getLocationManager().getLocation("spawn") != null)
                 e.getPlayer().teleport(ShadowUtils.getLocationManager().getLocation("spawn"));
+            else e.getPlayer().teleport(Utils.getLobby().getSpawnLocation());
         }
     }
 }

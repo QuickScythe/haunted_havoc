@@ -74,4 +74,11 @@ public class Utils {
         return logger;
     }
 
+    public static World getLobby() {
+        return lobby;
+    }
+
+    public static World getWorld(){
+        return world;
+    }
 }
