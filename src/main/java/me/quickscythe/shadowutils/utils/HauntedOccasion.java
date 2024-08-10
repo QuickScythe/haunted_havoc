@@ -58,18 +58,20 @@ public class HauntedOccasion extends ConfigClass implements Occasion {
     public boolean check() {
         long delay = TimeUnit.MILLISECONDS.convert(Utils.getConfig().getData().getInt("border_shrink_delay"), TimeUnit.MINUTES);
         long started = getConfig().getData().getLong("started_time");
-        long started_to_shrink = started + delay;
 
+        int max = Utils.getConfig().getData().getInt("world_border_max");
+        int min = Utils.getConfig().getData().getInt("world_border_min");
         long duration = TimeUnit.MILLISECONDS.convert(Utils.getConfig().getData().getLong("session_time"), TimeUnit.MINUTES);
+
         long now = new Date().getTime();
         long current = now - started;
         long remaining = duration - current;
         long delta = now - last_check;
-        int max = Utils.getConfig().getData().getInt("world_border_max");
-        int min = Utils.getConfig().getData().getInt("world_border_min");
+
 
         double dif = (double) (max - min) /duration;
-        double size = max-((current+delay)*dif);
+        double size = max-((current-delay)*dif);
+        if(size < 1) size = 1;
 
         if(current > delay){
             Utils.getWorld().getWorldBorder().setSize(size, TimeUnit.MILLISECONDS, delta);
