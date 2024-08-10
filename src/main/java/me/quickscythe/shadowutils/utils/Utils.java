@@ -37,7 +37,7 @@ public class Utils {
             WorldCreator creator = new WorldCreator(world);
             Utils.world = Bukkit.createWorld(creator);
             logger.log("Created Play world (" + world + ")");
-        }
+        } else Utils.world = Bukkit.getWorld(world);
 
         String lobby = config.getData().getString("lobby_world");
         if(Bukkit.getWorld(lobby) == null){
@@ -45,7 +45,7 @@ public class Utils {
             WorldCreator creator = new WorldCreator(lobby);
             Utils.lobby = Bukkit.createWorld(creator);
             logger.log("Created Lobby world (" + lobby + ")");
-        }
+        } else Utils.lobby = Bukkit.getWorld(lobby);
 
         new CommandManager.CommandBuilder("hauntedhavoc", new HauntedHavocCommand()).setAliases("hh").setDescription("Main command for Haunted Havoc").register(plugin);
 
