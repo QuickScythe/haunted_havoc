@@ -46,6 +46,9 @@ public class HauntedOccasion extends ConfigClass implements Occasion {
 
         Utils.getWorld().getWorldBorder().setSize(Utils.getConfig().getData().getDouble("world_border_max"));
 
+        for(Player player : Bukkit.getOnlinePlayers()){
+            player.teleport(Utils.getWorld().getSpawnLocation());
+        }
         //TODO
         // teleport players randomly
         return true;
