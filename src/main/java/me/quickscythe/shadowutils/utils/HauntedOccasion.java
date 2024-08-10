@@ -43,7 +43,7 @@ public class HauntedOccasion extends ConfigClass implements Occasion {
 
     @Override
     public boolean check() {
-        long started = getConfig().getData().getLong("started");
+        long started = getConfig().getData().getLong("started_time");
         long duration = TimeUnit.MILLISECONDS.convert(Utils.getConfig().getData().getLong("session_time"), TimeUnit.MINUTES);
         long now = new Date().getTime();
         long current = now - started;
