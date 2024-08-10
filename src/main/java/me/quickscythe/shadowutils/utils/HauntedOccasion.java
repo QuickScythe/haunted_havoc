@@ -17,12 +17,14 @@ public class HauntedOccasion extends ConfigClass implements Occasion {
 
     public HauntedOccasion(JavaPlugin plugin, String configFile) {
         super(plugin, configFile);
-        if(getConfig().getData().has("start"))
+        if(!getConfig().getData().has("start"))
             getConfig().getData().put("start", false);
-        if(getConfig().getData().has("end"))
+        if(!getConfig().getData().has("end"))
             getConfig().getData().put("end", false);
-        if(getConfig().getData().has("started_time"))
+        if(!getConfig().getData().has("started_time"))
             getConfig().getData().put("started_time", 0);
+        if(!getConfig().getData().has("started"))
+            getConfig().getData().put("started", false);
 
         OccasionManager.registerOccasion("test", this);
     }
