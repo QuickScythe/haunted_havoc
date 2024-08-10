@@ -3,6 +3,7 @@ package me.quickscythe.shadowutils.utils;
 import me.quickscythe.shadowcore.utils.Jsonifier;
 import me.quickscythe.shadowcore.utils.config.ConfigClass;
 import me.quickscythe.shadowcore.utils.occasion.Occasion;
+import me.quickscythe.shadowcore.utils.occasion.OccasionManager;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.json2.JSONObject;
@@ -22,6 +23,8 @@ public class HauntedOccasion extends ConfigClass implements Occasion {
             getConfig().getData().put("end", false);
         if(getConfig().getData().has("started_time"))
             getConfig().getData().put("started_time", 0);
+
+        OccasionManager.registerOccasion("test", this);
     }
 
     @Override

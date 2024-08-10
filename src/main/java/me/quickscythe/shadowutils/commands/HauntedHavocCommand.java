@@ -16,6 +16,7 @@ public class HauntedHavocCommand  implements ShadowCommand {
             return;
         }
         if(args[0].equalsIgnoreCase("start")){
+            Utils.getLogger().log("Starting occasion");
             Utils.getOccasion().start();
         }
 
