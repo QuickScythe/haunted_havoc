@@ -18,7 +18,11 @@ public class Utils {
         Utils.plugin = plugin;
         logger = new Logger(plugin);
 
+        //TODO remove
+        logger.log("Enabling Haunted Havoc - custom");
+        logger.log("Registering Occasion file");
         occasion = new HauntedOccasion(plugin, "occastion_data");
+        logger.log("Registering Config file");
         config = new HavocConfig(plugin, "config", "config.json");
 
 
