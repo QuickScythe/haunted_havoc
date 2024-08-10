@@ -2,6 +2,7 @@ package me.quickscythe.shadowutils.utils;
 
 import me.quickscythe.shadowcore.commands.CommandManager;
 import me.quickscythe.shadowcore.utils.chat.Logger;
+import me.quickscythe.shadowcore.utils.chat.MessageUtils;
 import me.quickscythe.shadowcore.utils.heartbeat.HeartbeatUtils;
 import me.quickscythe.shadowutils.HauntedHavoc;
 import me.quickscythe.shadowutils.commands.HauntedHavocCommand;
@@ -13,11 +14,12 @@ public class Utils {
 
     static HauntedOccasion occasion;
     static HavocConfig config;
+    static MessageUtils messageUtils;
 
     public static void init(HauntedHavoc plugin){
         Utils.plugin = plugin;
         logger = new Logger(plugin);
-
+        messageUtils = new MessageUtils(plugin);
         //TODO remove
         logger.log("Enabling Haunted Havoc - custom");
         logger.log("Registering Occasion file");
