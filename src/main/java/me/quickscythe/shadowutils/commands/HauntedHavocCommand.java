@@ -3,6 +3,7 @@ package me.quickscythe.shadowutils.commands;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import me.quickscythe.shadowcore.commands.ShadowCommand;
 import me.quickscythe.shadowcore.utils.team.TeamManager;
+import me.quickscythe.shadowutils.utils.Utils;
 import org.bukkit.OfflinePlayer;
 import org.jetbrains.annotations.NotNull;
 
@@ -15,7 +16,7 @@ public class HauntedHavocCommand  implements ShadowCommand {
             return;
         }
         if(args[0].equalsIgnoreCase("start")){
-
+            Utils.getOccasion().start();
         }
 
 

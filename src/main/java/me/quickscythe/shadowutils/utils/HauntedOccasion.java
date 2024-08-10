@@ -20,13 +20,20 @@ public class HauntedOccasion extends ConfigClass implements Occasion {
             getConfig().getData().put("start", false);
         if(getConfig().getData().has("end"))
             getConfig().getData().put("end", false);
-        if(getConfig().getData().has("started"))
-            getConfig().getData().put("started", new Date().getTime());
+        if(getConfig().getData().has("started_time"))
+            getConfig().getData().put("started_time", 0);
+    }
+
+    @Override
+    public boolean started() {
+        return getConfig().getData().getBoolean("started");
     }
 
     @Override
     public boolean start() {
-        return getConfig().getData().getBoolean("start");
+        getConfig().getData().put("started_time", new Date().getTime());
+        getConfig().getData().put("started", true);
+        return true;
     }
 
     @Override
