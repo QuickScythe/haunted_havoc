@@ -56,7 +56,7 @@ public class HauntedOccasion extends ConfigClass implements Occasion {
 
     @Override
     public boolean check() {
-        long delay = TimeUnit.MILLISECONDS.convert(Utils.getConfig().getData().getInt("world_border_delay"), TimeUnit.MINUTES);
+        long delay = TimeUnit.MILLISECONDS.convert(Utils.getConfig().getData().getInt("border_shrink_delay"), TimeUnit.MINUTES);
         long started = getConfig().getData().getLong("started_time");
         long started_to_shrink = started + delay;
 
