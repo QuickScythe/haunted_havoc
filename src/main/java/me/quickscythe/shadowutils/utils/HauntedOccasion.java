@@ -63,6 +63,11 @@ public class HauntedOccasion extends ConfigClass implements Occasion {
     }
 
     @Override
+    public boolean finished() {
+        return false;
+    }
+
+    @Override
     @JSONPropertyIgnore
     public JSONObject toJson() {
         return getConfig().getData();
