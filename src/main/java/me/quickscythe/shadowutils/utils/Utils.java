@@ -37,9 +37,11 @@ public class Utils {
     }
 
     public static void finish(){
+        getLogger().log("Saving files");
         occasion.finish();
         config.finish();
         messageUtils.finish();
+        getLogger().log("Files saved.");
     }
 
     public static HauntedOccasion getOccasion(){
