@@ -76,7 +76,7 @@ public class HauntedOccasion extends ConfigClass implements Occasion {
         if(current > delay){
             Utils.getWorld().getWorldBorder().setSize(size, TimeUnit.MILLISECONDS, delta);
             for(Player player : Bukkit.getOnlinePlayers()){
-                player.sendActionBar(Component.text("Time Remaining: ").append(Utils.getMessageUtils().formatTime(remaining)));
+                player.sendActionBar(Component.text("Time Remaining: ").append(Utils.getMessageUtils().formatTime(remaining+delay)));
             }
         } else {
             for(Player player : Bukkit.getOnlinePlayers()){
