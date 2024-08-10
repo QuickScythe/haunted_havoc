@@ -38,6 +38,7 @@ public class HauntedOccasion extends ConfigClass implements Occasion {
     public boolean start() {
         getConfig().getData().put("started_time", new Date().getTime());
         getConfig().getData().put("started", true);
+
         return true;
     }
 

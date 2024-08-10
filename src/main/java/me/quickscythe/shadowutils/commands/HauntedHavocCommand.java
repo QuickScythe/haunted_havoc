@@ -2,6 +2,7 @@ package me.quickscythe.shadowutils.commands;
 
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import me.quickscythe.shadowcore.commands.ShadowCommand;
+import me.quickscythe.shadowcore.utils.ShadowUtils;
 import me.quickscythe.shadowcore.utils.team.TeamManager;
 import me.quickscythe.shadowutils.utils.Utils;
 import org.bukkit.OfflinePlayer;
@@ -14,6 +15,9 @@ public class HauntedHavocCommand  implements ShadowCommand {
             //TODO send options
             // Also check perms prob?
             return;
+        }
+        if(args[0].equalsIgnoreCase("setspawn")){
+            ShadowUtils.getLocationManager().addLocation("spawn", stack.getLocation());
         }
         if(args[0].equalsIgnoreCase("start")){
             Utils.getLogger().log("Starting occasion");

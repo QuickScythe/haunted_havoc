@@ -6,6 +6,9 @@ import me.quickscythe.shadowcore.utils.chat.MessageUtils;
 import me.quickscythe.shadowcore.utils.heartbeat.HeartbeatUtils;
 import me.quickscythe.shadowutils.HauntedHavoc;
 import me.quickscythe.shadowutils.commands.HauntedHavocCommand;
+import org.bukkit.Bukkit;
+import org.bukkit.World;
+import org.bukkit.WorldCreator;
 
 public class Utils {
 
@@ -16,17 +19,32 @@ public class Utils {
     static HavocConfig config;
     static MessageUtils messageUtils;
 
+    static World lobby;
+    static World world;
+
     public static void init(HauntedHavoc plugin){
         Utils.plugin = plugin;
         logger = new Logger(plugin);
         messageUtils = new MessageUtils(plugin);
-        //TODO remove
-        logger.log("Enabling Haunted Havoc - custom");
-        logger.log("Registering Occasion file");
+
         occasion = new HauntedOccasion(plugin, "occastion_data");
-        logger.log("Registering Config file");
         config = new HavocConfig(plugin, "config", "config.json");
 
+        String world = config.getData().getString("play_world");
+        if(Bukkit.getWorld(world) == null){
+            logger.log("Play world (" + world + ") does not exist. Creating world.");
+            WorldCreator creator = new WorldCreator(world);
+            Utils.world = Bukkit.createWorld(creator);
+            logger.log("Created Play world (" + world + ")");
+        }
+
+        String lobby = config.getData().getString("lobby_world");
+        if(Bukkit.getWorld(lobby) == null){
+            logger.log("Lobby world (" + lobby + ") does not exist. Creating world.");
+            WorldCreator creator = new WorldCreator(lobby);
+            Utils.lobby = Bukkit.createWorld(creator);
+            logger.log("Created Lobby world (" + lobby + ")");
+        }
 
         new CommandManager.CommandBuilder("hauntedhavoc", new HauntedHavocCommand()).setAliases("hh").setDescription("Main command for Haunted Havoc").register(plugin);
 
