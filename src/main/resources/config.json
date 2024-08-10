@@ -1,7 +1,8 @@
 {
   "session_time": 30,
-  "world_border": 20,
+  "world_border_max": 20,
   "border_shrink_delay": 1,
   "play_world": "world",
-  "lobby_world": "lobby"
+  "lobby_world": "lobby",
+  "world_border_min": 1
 }

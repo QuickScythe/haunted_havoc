@@ -1,5 +1,6 @@
 package me.quickscythe.shadowutils.utils;
 
+import com.mojang.brigadier.Message;
 import me.quickscythe.shadowcore.commands.CommandManager;
 import me.quickscythe.shadowcore.utils.chat.Logger;
 import me.quickscythe.shadowcore.utils.chat.MessageUtils;
@@ -80,5 +81,9 @@ public class Utils {
 
     public static World getWorld(){
         return world;
+    }
+
+    public static MessageUtils getMessageUtils() {
+        return messageUtils;
     }
 }
