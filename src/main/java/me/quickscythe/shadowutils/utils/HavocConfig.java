@@ -7,8 +7,8 @@ import org.json2.JSONObject;
 
 public class HavocConfig extends ConfigClass {
     public HavocConfig(JavaPlugin plugin, String configFile, String resource) {
-        Utils.getLogger().log("Instance for HavocConfig loaded. Sending to super");
         super(plugin, configFile, resource);
+        Utils.getLogger().log("Instance for HavocConfig loaded. Sending to super");
     }
 
     public JSONObject getData(){
