@@ -1,6 +1,6 @@
-name: CostumeContest
+name: ${name}
 version: '${version}'
-main: me.quickscythe.shadowcore.HauntedHavoc
+main: me.quickscythe.shadowutils.HauntedHavoc
 api-version: '1.21'
 dependencies:
   server:
