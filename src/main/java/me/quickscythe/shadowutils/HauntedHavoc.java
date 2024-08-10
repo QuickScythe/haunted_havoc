@@ -14,5 +14,6 @@ public final class HauntedHavoc extends JavaPlugin {
     @Override
     public void onDisable() {
         // Plugin shutdown logic
+        Utils.finish();
     }
 }

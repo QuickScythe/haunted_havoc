@@ -39,6 +39,7 @@ public class Utils {
     public static void finish(){
         occasion.finish();
         config.finish();
+        messageUtils.finish();
     }
 
     public static HauntedOccasion getOccasion(){
