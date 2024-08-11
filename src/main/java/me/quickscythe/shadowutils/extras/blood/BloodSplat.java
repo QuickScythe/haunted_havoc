@@ -41,15 +41,16 @@ public class BloodSplat {
             splat.setBackgroundColor(Color.fromARGB(0,0,0,0));
 //            splat.setTextOpacity(r.nextDouble());
 //            splat.teleport();
-//            SPLATS.add(splat);
-            Bukkit.getScheduler().runTaskLater(Utils.getPlugin(), splat::remove, r.nextInt(40*20)+20);
+            SPLATS.add(splat);
+//            Bukkit.getScheduler().runTaskLater(Utils.getPlugin(), splat::remove, r.nextInt(40*20)+20);
         }
-//        Bukkit.getScheduler().runTaskLater(Utils.getPlugin(), this::remove, 20*5);
+        Bukkit.getScheduler().runTaskLater(Utils.getPlugin(), this::remove, 20*5);
     }
 
     public void remove(){
         for(TextDisplay splat : SPLATS){
             splat.text(Component.text(""));
+            splat.remove();
         }
     }
 }
