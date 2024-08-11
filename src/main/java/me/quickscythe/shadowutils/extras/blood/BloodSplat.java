@@ -29,6 +29,7 @@ public class BloodSplat {
             double x = (r.nextBoolean() ? 1 : -1)*((radius > 0 ? r.nextInt(radius) : 0)+r.nextDouble());
             double z = (r.nextBoolean() ? 1 : -1)*((radius > 0 ? r.nextInt(radius) : 0)+r.nextDouble());
             Location splat_loc = loc.clone().add(x,0,z);
+            splat_loc.setY(splat_loc.getBlockX());
             while(splat_loc.clone().add(0,-1,0).getBlock().getType().equals(Material.AIR)){
                 Utils.getLogger().log("Splat in air, moving down");
                 splat_loc.add(0,-1,0);
@@ -40,10 +41,10 @@ public class BloodSplat {
             splat.setBackgroundColor(Color.fromARGB(0,0,0,0));
 //            splat.setTextOpacity(r.nextDouble());
 //            splat.teleport();
-            SPLATS.add(splat);
-
+//            SPLATS.add(splat);
+            Bukkit.getScheduler().runTaskLater(Utils.getPlugin(), splat::remove, r.nextInt(40*20)+20);
         }
-        Bukkit.getScheduler().runTaskLater(Utils.getPlugin(), this::remove, 20*5);
+//        Bukkit.getScheduler().runTaskLater(Utils.getPlugin(), this::remove, 20*5);
     }
 
     public void remove(){
