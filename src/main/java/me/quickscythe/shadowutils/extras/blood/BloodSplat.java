@@ -50,7 +50,7 @@ public class BloodSplat {
     public void remove(){
         for(TextDisplay splat : SPLATS){
             splat.text(Component.text(""));
-            splat.remove();
+//            splat.remove();
         }
     }
 }
