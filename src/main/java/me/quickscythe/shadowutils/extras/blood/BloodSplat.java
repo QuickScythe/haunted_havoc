@@ -20,6 +20,7 @@ public class BloodSplat {
         Random r = new Random();
         int radius = (int) Math.floor(damage_taken/20);
         int loops = (int) (damage_taken*(r.nextBoolean() ? 1 : 2));
+        if(loops > 100) loops = 100;
         for(int i=0;i<=loops;i++){
             double x = (r.nextBoolean() ? 1 : -1)*((radius > 0 ? r.nextInt(radius) : 0)+r.nextDouble());
             double z = (r.nextBoolean() ? 1 : -1)*((radius > 0 ? r.nextInt(radius) : 0)+r.nextDouble());
@@ -31,8 +32,14 @@ public class BloodSplat {
             TextDisplay splat = loc.getWorld().spawn(splat_loc, TextDisplay.class);
             splat.text(Component.text(SPLAT_CHARS[r.nextInt(SPLAT_CHARS.length)]));
             splat.setBackgroundColor(Color.fromARGB(0,0,0,0));
-            Bukkit.getScheduler().runTaskLater(Utils.getPlugin(), splat::remove, r.nextInt(14*20)+20);
+            SPLATS.add(splat);
         }
+        Bukkit.getScheduler().runTaskLater(Utils.getPlugin(), this::remove, r.nextInt(10*20)+20*5);
+    }
+
+    public void remove(){
+        for(TextDisplay splat : SPLATS)
+            splat.remove();
     }
 
 
