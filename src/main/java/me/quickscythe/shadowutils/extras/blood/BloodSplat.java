@@ -28,9 +28,9 @@ public class BloodSplat {
         for(int i=0;i<=loops;i++){
             double x = (r.nextBoolean() ? 1 : -1)*((radius > 0 ? r.nextInt(radius) : 0)+r.nextDouble());
             double z = (r.nextBoolean() ? 1 : -1)*((radius > 0 ? r.nextInt(radius) : 0)+r.nextDouble());
-            Location splat_loc = loc.clone().add(0,radius,0);
+            Location splat_loc = loc.clone().add(x,radius,z);
 //            splat_loc.setY(splat_loc.getBlockY());
-            while(splat_loc.clone().add(x,-1,z).getBlock().getType().equals(Material.AIR)){
+            while(splat_loc.clone().add(0,-1,0).getBlock().getType().equals(Material.AIR)){
                 Utils.getLogger().log("Splat in air, moving down");
                 splat_loc.add(0,-1,0);
             }
