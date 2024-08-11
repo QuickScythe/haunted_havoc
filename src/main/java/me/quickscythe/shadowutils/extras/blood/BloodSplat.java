@@ -26,7 +26,7 @@ public class BloodSplat {
         int radius = (int) Math.floor(damage_taken/7);
         Utils.getLogger().log("Radius: " + radius);
 
-        int loops = (int) (damage_taken*r.nextInt(1)+1);
+        int loops = (int) (damage_taken*(r.nextBoolean() ? 1 : 2));
         Utils.getLogger().log("Loops: " + loops);
         for(int i=0;i<=loops;i++){
             double x = (r.nextBoolean() ? 1 : -1)*(radius > 0 ? r.nextInt(radius) : 0)+r.nextDouble();
