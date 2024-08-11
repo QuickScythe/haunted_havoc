@@ -16,7 +16,7 @@ public class BloodSplat {
     private final Location LOC;
     private final double DAMAGE;
     private final List<TextDisplay> SPLATS = new ArrayList<>();
-    private final char[] SPLAT_CHARS = new char[] {'\ua001','\ua002','\ua003', '\ua004', '\ua005', '\ua006', '\ua007', '\ua008'};
+    private final char[] SPLAT_CHARS = new char[] {'\uEFF1','\uEFF2','\uEFF3', '\uEFF4', '\uEFF5', '\uEFF6', '\uEFF7', '\uEFF8'};
     public BloodSplat(Location loc, double damage_taken){
         this.DAMAGE = damage_taken;
         this.LOC = loc;
