@@ -23,7 +23,7 @@ public class BloodSplat {
         Random r = new Random();
         Utils.getLogger().log("damage taken: " + damage_taken);
 
-        int radius = (int) Math.floor(damage_taken/7);
+        int radius = (int) Math.floor(damage_taken/10);
         Utils.getLogger().log("Radius: " + radius);
 
         int loops = (int) (damage_taken*(r.nextBoolean() ? 1 : 2));
@@ -40,6 +40,7 @@ public class BloodSplat {
             splat.setBackgroundColor(Color.fromARGB(0,0,0,0));
 //            splat.setTextOpacity(r.nextDouble());
 //            splat.teleport();
+            SPLATS.add(splat);
 
         }
         Bukkit.getScheduler().runTaskLater(Utils.getPlugin(), this::remove, 20*5);
