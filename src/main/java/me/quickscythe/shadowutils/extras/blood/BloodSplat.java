@@ -28,7 +28,7 @@ public class BloodSplat {
 
         for(int i=0;i<=damage_taken*r.nextInt(1)+1;i++){
 
-            Location splat_loc = loc.clone().add(r.nextInt(radius)+r.nextDouble(),0.01,r.nextInt(radius)+r.nextDouble());
+            Location splat_loc = loc.clone().add((radius > 0 ? r.nextInt(radius) : 0)+r.nextDouble(),0.01,(radius > 0 ? r.nextInt(radius) : 0)+r.nextDouble());
             splat_loc.setPitch(-90);
             TextDisplay splat = loc.getWorld().spawn(splat_loc, TextDisplay.class);
             splat.text(Component.text("B"));
