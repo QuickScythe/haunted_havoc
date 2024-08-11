@@ -68,11 +68,11 @@ public class HauntedOccasion extends ConfigClass implements Occasion {
         Random random = new Random();
         for(Team team : TeamManager.getTeams()){
             Location loc = new Location(Utils.getWorld(), random.nextInt((int) world_border), 100, random.nextInt((int) world_border));
-            loc = loc.getWorld().getHighestBlockAt(loc).getLocation().clone().add(0,2,0);
+            loc = loc.getWorld().getHighestBlockAt(loc).getLocation().clone();
             for(UUID uid : team.getPlayers()){
                 if(Bukkit.getPlayer(uid) == null) continue;
                 int radius = Utils.getConfig().getData().getInt("team_teleport_radius");
-                Bukkit.getPlayer(uid).teleport(loc.getWorld().getHighestBlockAt(loc.clone().add(random.nextInt(radius), 0 , random.nextInt(radius))).getLocation());
+                Bukkit.getPlayer(uid).teleport(loc.getWorld().getHighestBlockAt(loc.clone().add(random.nextInt(radius), 0 , random.nextInt(radius))).getLocation().clone().add(0,1,0));
             }
         }
 
