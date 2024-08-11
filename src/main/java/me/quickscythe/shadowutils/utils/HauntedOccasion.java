@@ -103,7 +103,7 @@ public class HauntedOccasion extends ConfigClass implements Occasion {
         double size = max - ((current - delay) * dif);
         if (size < 1) size = 1;
 
-        if (current > duration + delay) {
+        if (current < duration + delay) {
             if (current > delay) {
                 Utils.getWorld().getWorldBorder().setSize(size, TimeUnit.MILLISECONDS, delta);
                 for (Player player : Bukkit.getOnlinePlayers()) {
