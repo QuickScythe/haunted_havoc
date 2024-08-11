@@ -16,27 +16,21 @@ public class BloodSplat {
     private final Location LOC;
     private final double DAMAGE;
     private final List<TextDisplay> SPLATS = new ArrayList<>();
+    private final char[] SPLAT_CHARS = new char[] {'\u0001','\u0002','\u0003', '\u0004', '\u0005', '\u0006', '\u0007', '\u0008'};
 
     public BloodSplat(Location loc, double damage_taken){
         this.DAMAGE = damage_taken;
         this.LOC = loc;
         Random r = new Random();
-        Utils.getLogger().log("damage taken: " + damage_taken);
-
         int radius = (int) Math.floor(damage_taken/10);
-        Utils.getLogger().log("Radius: " + radius);
-
         int loops = (int) (damage_taken*(r.nextBoolean() ? 1 : 2));
-        Utils.getLogger().log("Loops: " + loops);
         for(int i=0;i<=loops;i++){
             double x = (r.nextBoolean() ? 1 : -1)*(radius > 0 ? r.nextInt(radius) : 0)+r.nextDouble();
             double z = (r.nextBoolean() ? 1 : -1)*(radius > 0 ? r.nextInt(radius) : 0)+r.nextDouble();
-            Utils.getLogger().log("X: " + x);
-            Utils.getLogger().log("Z: " + z);
             Location splat_loc = loc.clone().add(x,0.01,z);
             splat_loc.setPitch(-90);
             TextDisplay splat = loc.getWorld().spawn(splat_loc, TextDisplay.class);
-            splat.text(Component.text("B"));
+            splat.text(Component.text(SPLAT_CHARS[r.nextInt(SPLAT_CHARS.length)]));
             splat.setBackgroundColor(Color.fromARGB(0,0,0,0));
 //            splat.setTextOpacity(r.nextDouble());
 //            splat.teleport();
