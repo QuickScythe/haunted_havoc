@@ -1,9 +1,13 @@
 package me.quickscythe.shadowutils.listeners;
 
 import me.quickscythe.shadowcore.utils.ShadowUtils;
+import me.quickscythe.shadowcore.utils.team.Team;
+import me.quickscythe.shadowcore.utils.team.TeamManager;
 import me.quickscythe.shadowutils.utils.Utils;
+import org.bukkit.GameMode;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 
 public class ServerInteractionListener implements Listener {
@@ -15,5 +19,22 @@ public class ServerInteractionListener implements Listener {
                 e.getPlayer().teleport(ShadowUtils.getLocationManager().getLocation("spawn"));
             else e.getPlayer().teleport(Utils.getLobby().getSpawnLocation());
         }
+    }
+
+    @EventHandler
+    public void onPlayerDeath(PlayerDeathEvent e){
+        Team t = null;
+        for(Team team : TeamManager.getTeams()){
+            if(team.getPlayers().contains(e.getPlayer().getUniqueId())){
+                t = team;
+                break;
+            }
+        }
+        if(t != null){
+            e.getPlayer().setGameMode(GameMode.SPECTATOR);
+            t.removePlayer(e.getPlayer());
+            TeamManager.getTeam("spectators").addPlayer(e.getPlayer());
+        }
+
     }
 }

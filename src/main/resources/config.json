@@ -1,8 +1,9 @@
 {
-  "session_time": 30,
-  "world_border_max": 20,
-  "border_shrink_delay": 1,
+  "session_time": 120,
+  "world_border_max": 4000,
+  "grace_period": 20,
   "play_world": "world",
   "lobby_world": "lobby",
-  "world_border_min": 1
+  "world_border_min": 100,
+  "team_teleport_radius": 10
 }
