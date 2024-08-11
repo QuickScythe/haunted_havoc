@@ -5,8 +5,10 @@ import me.quickscythe.shadowcore.utils.team.Team;
 import me.quickscythe.shadowcore.utils.team.TeamManager;
 import me.quickscythe.shadowutils.utils.Utils;
 import org.bukkit.GameMode;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 
@@ -18,6 +20,13 @@ public class ServerInteractionListener implements Listener {
             if (ShadowUtils.getLocationManager().getLocation("spawn") != null)
                 e.getPlayer().teleport(ShadowUtils.getLocationManager().getLocation("spawn"));
             else e.getPlayer().teleport(Utils.getLobby().getSpawnLocation());
+        }
+    }
+
+    @EventHandler
+    public void onEntityDamageEntity(EntityDamageByEntityEvent e){
+        if(e.getDamager() instanceof Player damager && e.getEntity() instanceof Player player){
+            if(Utils.getOccasion().inGracePeriod()) e.setCancelled(true);
         }
     }
 

@@ -20,13 +20,13 @@ import java.util.concurrent.TimeUnit;
 
 public class HauntedOccasion extends ConfigClass implements Occasion {
 
+    private final int MAX_PHASES = 5;
+    private int phase = 0;
     long last_check = 0;
 
 
     public HauntedOccasion(JavaPlugin plugin, String configFile) {
         super(plugin, configFile);
-        if (!getConfig().getData().has("start"))
-            getConfig().getData().put("start", false);
         if (!getConfig().getData().has("end"))
             getConfig().getData().put("end", false);
         if (!getConfig().getData().has("started_time"))
@@ -76,11 +76,6 @@ public class HauntedOccasion extends ConfigClass implements Occasion {
             }
         }
 
-//        for (Player player : Bukkit.getOnlinePlayers()) {
-//            player.teleport(Utils.getWorld().getSpawnLocation());
-//        }
-        //TODO
-        // teleport players randomly
         return true;
     }
 
@@ -105,6 +100,11 @@ public class HauntedOccasion extends ConfigClass implements Occasion {
 
         if (current < duration + delay) {
             if (current > delay) {
+                int phase = (int) Math.floor((double) current /((double) duration /MAX_PHASES));
+                if(this.phase != phase){
+                    this.phase = phase;
+                    Utils.getLogger().log("Moving on to phase " + phase);
+                }
                 Utils.getWorld().getWorldBorder().setSize(size, TimeUnit.MILLISECONDS, delta);
                 for (Player player : Bukkit.getOnlinePlayers()) {
                     player.sendActionBar(Component.text("Time Remaining: ").append(Utils.getMessageUtils().formatTime(remaining + delay)));
@@ -135,5 +135,17 @@ public class HauntedOccasion extends ConfigClass implements Occasion {
     @JSONPropertyIgnore
     public JSONObject toJson() {
         return getConfig().getData();
+    }
+
+    public boolean inGracePeriod() {
+        long delay = TimeUnit.MILLISECONDS.convert(Utils.getConfig().getData().getInt("grace_period"), TimeUnit.MINUTES);
+        long started = getConfig().getData().getLong("started_time");
+        long now = new Date().getTime();
+        long current = now - started;
+        return current < delay;
+    }
+
+    public int getPhase(){
+        return phase;
     }
 }
