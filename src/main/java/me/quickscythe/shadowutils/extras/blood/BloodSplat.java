@@ -29,7 +29,7 @@ public class BloodSplat {
 //            splat.teleport();
 
         }
-        Bukkit.getScheduler().runTaskLater(Utils.getPlugin(), this::remove, 20*30);
+        Bukkit.getScheduler().runTaskLater(Utils.getPlugin(), this::remove, 20*5);
     }
 
     public void remove(){
