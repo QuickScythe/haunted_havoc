@@ -43,7 +43,7 @@ public class BloodSplat {
 //            splat.setTextOpacity(r.nextDouble());
 //            splat.teleport();
 //            SPLATS.add(splat);
-            Bukkit.getScheduler().runTaskLater(Utils.getPlugin(), splat::remove, r.nextInt(40*20)+20);
+            Bukkit.getScheduler().runTaskLater(Utils.getPlugin(), splat::remove, r.nextInt(14*20)+20);
         }
 //        Bukkit.getScheduler().runTaskLater(Utils.getPlugin(), this::remove, 20*5);
     }
