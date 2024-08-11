@@ -22,9 +22,11 @@ public class BloodSplat {
         Random r = new Random();
         for(int i=0;i<=damage_taken*r.nextInt(9)+1;i++){
             Location splat_loc = loc.clone().add(r.nextInt(1)+r.nextDouble(),0,r.nextInt(1)+r.nextDouble());
+            splat_loc.setPitch(-90);
             TextDisplay splat = loc.getWorld().spawn(splat_loc, TextDisplay.class);
             splat.text(Component.text("B"));
 //            splat.setTextOpacity(r.nextDouble());
+//            splat.teleport();
 
         }
         Bukkit.getScheduler().runTaskLater(Utils.getPlugin(), this::remove, 20*30);

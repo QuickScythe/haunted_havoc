@@ -9,9 +9,7 @@ import me.quickscythe.shadowcore.utils.team.TeamManager;
 import me.quickscythe.shadowutils.HauntedHavoc;
 import me.quickscythe.shadowutils.commands.HauntedHavocCommand;
 import net.kyori.adventure.text.format.NamedTextColor;
-import org.bukkit.Bukkit;
-import org.bukkit.World;
-import org.bukkit.WorldCreator;
+import org.bukkit.*;
 
 public class Utils {
 
@@ -30,6 +28,7 @@ public class Utils {
         logger = new Logger(plugin);
         messageUtils = new MessageUtils(plugin);
 
+
         occasion = new HauntedOccasion(plugin, "occastion_data");
         config = new HavocConfig(plugin, "config", "config.json");
 
@@ -41,6 +40,8 @@ public class Utils {
             logger.log("Created Play world (" + world + ")");
         } else Utils.world = Bukkit.getWorld(world);
 
+        Utils.world.setGameRule(GameRule.NATURAL_REGENERATION, false);
+
         String lobby = config.getData().getString("lobby_world");
         if(Bukkit.getWorld(lobby) == null){
             logger.log("Lobby world (" + lobby + ") does not exist. Creating world.");
@@ -48,6 +49,8 @@ public class Utils {
             Utils.lobby = Bukkit.createWorld(creator);
             logger.log("Created Lobby world (" + lobby + ")");
         } else Utils.lobby = Bukkit.getWorld(lobby);
+
+        Utils.lobby.setDifficulty(Difficulty.PEACEFUL);
 
         TeamManager.registerTeam("spectators").setColor(NamedTextColor.GRAY);
 

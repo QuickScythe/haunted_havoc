@@ -25,6 +25,8 @@ public class ServerInteractionListener implements Listener {
         }
     }
 
+
+
     @EventHandler
     public void onEntityDamage(EntityDamageEvent e){
         new BloodSplat(e.getEntity().getLocation(), e.getDamage());
