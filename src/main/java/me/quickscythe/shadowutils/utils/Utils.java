@@ -5,8 +5,10 @@ import me.quickscythe.shadowcore.commands.CommandManager;
 import me.quickscythe.shadowcore.utils.chat.Logger;
 import me.quickscythe.shadowcore.utils.chat.MessageUtils;
 import me.quickscythe.shadowcore.utils.heartbeat.HeartbeatUtils;
+import me.quickscythe.shadowcore.utils.team.TeamManager;
 import me.quickscythe.shadowutils.HauntedHavoc;
 import me.quickscythe.shadowutils.commands.HauntedHavocCommand;
+import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.WorldCreator;
@@ -46,6 +48,8 @@ public class Utils {
             Utils.lobby = Bukkit.createWorld(creator);
             logger.log("Created Lobby world (" + lobby + ")");
         } else Utils.lobby = Bukkit.getWorld(lobby);
+
+        TeamManager.registerTeam("spectators").setColor(NamedTextColor.GRAY);
 
         new CommandManager.CommandBuilder("hauntedhavoc", new HauntedHavocCommand()).setAliases("hh").setDescription("Main command for Haunted Havoc").register(plugin);
 
