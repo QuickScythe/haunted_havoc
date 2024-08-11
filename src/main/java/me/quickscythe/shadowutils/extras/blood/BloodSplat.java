@@ -30,11 +30,11 @@ public class BloodSplat {
             double z = (r.nextBoolean() ? 1 : -1)*((radius > 0 ? r.nextInt(radius) : 0)+r.nextDouble());
             Location splat_loc = loc.clone().add(0,radius,0);
 //            splat_loc.setY(splat_loc.getBlockY());
-            while(splat_loc.clone().add(0,-1,0).getBlock().getType().equals(Material.AIR)){
+            while(splat_loc.clone().add(x,-1,z).getBlock().getType().equals(Material.AIR)){
                 Utils.getLogger().log("Splat in air, moving down");
                 splat_loc.add(0,-1,0);
             }
-            splat_loc.add(x,0.01,z);
+            splat_loc.add(0,0.01,0);
             splat_loc.setPitch(-90);
             TextDisplay splat = loc.getWorld().spawn(splat_loc, TextDisplay.class);
             Utils.getLogger().log("Splat at (" + splat_loc.getX() + ", " + splat_loc.getY() + ", " + splat_loc.getZ() + ").");
@@ -42,10 +42,10 @@ public class BloodSplat {
             splat.setBackgroundColor(Color.fromARGB(0,0,0,0));
 //            splat.setTextOpacity(r.nextDouble());
 //            splat.teleport();
-            SPLATS.add(splat);
-//            Bukkit.getScheduler().runTaskLater(Utils.getPlugin(), splat::remove, r.nextInt(40*20)+20);
+//            SPLATS.add(splat);
+            Bukkit.getScheduler().runTaskLater(Utils.getPlugin(), splat::remove, r.nextInt(40*20)+20);
         }
-        Bukkit.getScheduler().runTaskLater(Utils.getPlugin(), this::remove, 20*5);
+//        Bukkit.getScheduler().runTaskLater(Utils.getPlugin(), this::remove, 20*5);
     }
 
     public void remove(){
