@@ -100,7 +100,7 @@ public class HauntedOccasion extends ConfigClass implements Occasion {
 
         if (current < duration + delay) {
             if (current > delay) {
-                int phase = (int) Math.floor((double) current /((double) duration /MAX_PHASES));
+                int phase = (int) (Math.floor((double) current /((double) duration /MAX_PHASES)))-(MAX_PHASES-1);
                 if(this.phase != phase){
                     this.phase = phase;
                     Utils.getLogger().log("Moving on to phase " + phase);
