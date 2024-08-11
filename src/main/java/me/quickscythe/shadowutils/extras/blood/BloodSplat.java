@@ -25,8 +25,8 @@ public class BloodSplat {
         int radius = (int) Math.floor(damage_taken/10);
         int loops = (int) (damage_taken*(r.nextBoolean() ? 1 : 2));
         for(int i=0;i<=loops;i++){
-            double x = (r.nextBoolean() ? 1 : -1)*(radius > 0 ? r.nextInt(radius) : 0)+r.nextDouble();
-            double z = (r.nextBoolean() ? 1 : -1)*(radius > 0 ? r.nextInt(radius) : 0)+r.nextDouble();
+            double x = (r.nextBoolean() ? 1 : -1)*((radius > 0 ? r.nextInt(radius) : 0)+r.nextDouble());
+            double z = (r.nextBoolean() ? 1 : -1)*((radius > 0 ? r.nextInt(radius) : 0)+r.nextDouble());
             Location splat_loc = loc.clone().add(x,0.01,z);
             splat_loc.setPitch(-90);
             TextDisplay splat = loc.getWorld().spawn(splat_loc, TextDisplay.class);
