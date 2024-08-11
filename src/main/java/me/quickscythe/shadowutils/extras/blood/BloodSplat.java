@@ -37,6 +37,7 @@ public class BloodSplat {
             splat_loc.add(x,0.01,z);
             splat_loc.setPitch(-90);
             TextDisplay splat = loc.getWorld().spawn(splat_loc, TextDisplay.class);
+            Utils.getLogger().log("Splat at (" + splat_loc.getX() + ", " + splat_loc.getY() + ", " + splat_loc.getZ() + ").");
             splat.text(Component.text(SPLAT_CHARS[r.nextInt(SPLAT_CHARS.length)]));
             splat.setBackgroundColor(Color.fromARGB(0,0,0,0));
 //            splat.setTextOpacity(r.nextDouble());
