@@ -28,13 +28,13 @@ public class BloodSplat {
         for(int i=0;i<=loops;i++){
             double x = (r.nextBoolean() ? 1 : -1)*((radius > 0 ? r.nextInt(radius) : 0)+r.nextDouble());
             double z = (r.nextBoolean() ? 1 : -1)*((radius > 0 ? r.nextInt(radius) : 0)+r.nextDouble());
-            Location splat_loc = loc.clone().add(x,0,z);
+            Location splat_loc = loc.clone();
             splat_loc.setY(splat_loc.getBlockX());
             while(splat_loc.clone().add(0,-1,0).getBlock().getType().equals(Material.AIR)){
                 Utils.getLogger().log("Splat in air, moving down");
                 splat_loc.add(0,-1,0);
             }
-            splat_loc.add(0,0.01,0);
+            splat_loc.add(x,0.01,z);
             splat_loc.setPitch(-90);
             TextDisplay splat = loc.getWorld().spawn(splat_loc, TextDisplay.class);
             splat.text(Component.text(SPLAT_CHARS[r.nextInt(SPLAT_CHARS.length)]));
