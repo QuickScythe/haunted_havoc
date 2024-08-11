@@ -16,11 +16,11 @@ public class BloodSplat {
     private final Location LOC;
     private final double DAMAGE;
     private final List<TextDisplay> SPLATS = new ArrayList<>();
-    private final char[] SPLAT_CHARS = new char[] {'\u0001','\u0002','\u0003', '\u0004', '\u0005', '\u0006', '\u0007', '\u0008'};
-
+    private final char[] SPLAT_CHARS = new char[] {'\ua001','\ua002','\ua003', '\ua004', '\ua005', '\ua006', '\ua007', '\ua008'};
     public BloodSplat(Location loc, double damage_taken){
         this.DAMAGE = damage_taken;
         this.LOC = loc;
+//        String s = " is going home!";
         Random r = new Random();
         int radius = (int) Math.floor(damage_taken/10);
         int loops = (int) (damage_taken*(r.nextBoolean() ? 1 : 2));
