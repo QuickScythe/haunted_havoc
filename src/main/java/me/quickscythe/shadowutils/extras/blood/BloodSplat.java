@@ -21,7 +21,11 @@ public class BloodSplat {
         this.DAMAGE = damage_taken;
         this.LOC = loc;
         Random r = new Random();
+        Utils.getLogger().log("damage taken: " + damage_taken);
+
         int radius = (int) Math.floor(damage_taken/7);
+        Utils.getLogger().log("Radius: " + radius);
+
         for(int i=0;i<=damage_taken*r.nextInt(1)+1;i++){
 
             Location splat_loc = loc.clone().add(r.nextInt(radius)+r.nextDouble(),0.01,r.nextInt(radius)+r.nextDouble());
