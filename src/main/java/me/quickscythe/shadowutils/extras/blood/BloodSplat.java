@@ -18,7 +18,7 @@ public class BloodSplat {
     private final char[] SPLAT_CHARS = new char[] {'\uEFF1','\uEFF2','\uEFF3', '\uEFF4', '\uEFF5', '\uEFF6', '\uEFF7', '\uEFF8'};
     public BloodSplat(Location loc, double damage_taken){
         Random r = new Random();
-        int radius = (int) Math.floor(damage_taken/15);
+        int radius = (int) Math.floor(damage_taken/20);
         int loops = (int) (damage_taken*(r.nextBoolean() ? 1 : 2));
         for(int i=0;i<=loops;i++){
             double x = (r.nextBoolean() ? 1 : -1)*((radius > 0 ? r.nextInt(radius) : 0)+r.nextDouble());
