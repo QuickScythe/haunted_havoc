@@ -6,7 +6,6 @@ import me.quickscythe.shadowcore.utils.ShadowUtils;
 import me.quickscythe.shadowcore.utils.chat.Logger;
 import me.quickscythe.shadowcore.utils.team.Team;
 import me.quickscythe.shadowcore.utils.team.TeamManager;
-import me.quickscythe.shadowutils.entities.CustomZombie;
 import me.quickscythe.shadowutils.utils.Utils;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.minecraft.world.level.Level;
