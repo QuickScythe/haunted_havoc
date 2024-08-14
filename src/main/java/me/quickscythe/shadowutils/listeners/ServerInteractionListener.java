@@ -3,14 +3,17 @@ package me.quickscythe.shadowutils.listeners;
 import me.quickscythe.shadowcore.utils.ShadowUtils;
 import me.quickscythe.shadowcore.utils.team.Team;
 import me.quickscythe.shadowcore.utils.team.TeamManager;
+import me.quickscythe.shadowutils.entities.CustomZombie;
 import me.quickscythe.shadowutils.extras.blood.BloodSplat;
 import me.quickscythe.shadowutils.utils.Utils;
 import org.bukkit.GameMode;
+import org.bukkit.craftbukkit.entity.CraftZombie;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.EntitySpawnEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 
@@ -25,10 +28,21 @@ public class ServerInteractionListener implements Listener {
         }
     }
 
+    @EventHandler
+    public void onEntitySpawn(EntitySpawnEvent e){
 
+    }
+
+    //TODO register entity spawn event, check game and moon phase, spawn mobs depending
 
     @EventHandler
     public void onEntityDamage(EntityDamageEvent e){
+        if(e.getEntity() instanceof CraftZombie){
+            Utils.getLogger().log("Found craft Zom");
+            if(((CraftZombie) e.getEntity()).getHandle() instanceof CustomZombie){
+                Utils.getLogger().log("Custom Zom!");
+            }
+        }
         new BloodSplat(e.getEntity().getLocation(), e.getDamage());
     }
 

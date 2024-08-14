@@ -8,6 +8,7 @@ import me.quickscythe.shadowcore.utils.team.TeamManager;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.json2.JSONObject;
@@ -71,8 +72,16 @@ public class HauntedOccasion extends ConfigClass implements Occasion {
             loc = loc.getWorld().getHighestBlockAt(loc).getLocation().clone();
             for(UUID uid : team.getPlayers()){
                 if(Bukkit.getPlayer(uid) == null) continue;
+                Player player = Bukkit.getPlayer(uid);
+                assert player != null;
                 int radius = Utils.getConfig().getData().getInt("team_teleport_radius");
-                Bukkit.getPlayer(uid).teleport(loc.getWorld().getHighestBlockAt(loc.clone().add(random.nextInt(radius), 0 , random.nextInt(radius))).getLocation().clone().add(0,1,0));
+
+
+                player.teleportAsync(loc.getWorld().getHighestBlockAt(loc.clone().add(random.nextInt(radius), 0 , random.nextInt(radius))).getLocation().clone().add(0,1,0)).thenAccept(success -> {
+                    if(success){
+                        player.sendMessage(Utils.getMessageUtils().getMessage("hh.msg.teleport.success"));
+                    }
+                });
             }
         }
 
@@ -147,5 +156,9 @@ public class HauntedOccasion extends ConfigClass implements Occasion {
 
     public int getPhase(){
         return phase;
+    }
+
+    public int getMoonPhase(World world){
+        return (int) ((world.getFullTime()/24000)%8);
     }
 }

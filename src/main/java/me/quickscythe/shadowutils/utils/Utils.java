@@ -2,19 +2,25 @@ package me.quickscythe.shadowutils.utils;
 
 import com.mojang.brigadier.Message;
 import me.quickscythe.shadowcore.commands.CommandManager;
+import me.quickscythe.shadowcore.utils.RegistryUtils;
 import me.quickscythe.shadowcore.utils.chat.Logger;
 import me.quickscythe.shadowcore.utils.chat.MessageUtils;
+import me.quickscythe.shadowcore.utils.entity.CustomEntityRegistry;
 import me.quickscythe.shadowcore.utils.heartbeat.HeartbeatUtils;
 import me.quickscythe.shadowcore.utils.team.TeamManager;
 import me.quickscythe.shadowutils.HauntedHavoc;
 import me.quickscythe.shadowutils.commands.HauntedHavocCommand;
+import me.quickscythe.shadowutils.extras.entity.HauntedEntities;
 import net.kyori.adventure.text.format.NamedTextColor;
+import net.minecraft.world.level.Level;
 import org.bukkit.*;
+import org.bukkit.craftbukkit.CraftWorld;
 
 public class Utils {
 
     static HauntedHavoc plugin;
     static Logger logger;
+    static CustomEntityRegistry cer;
 
     static HauntedOccasion occasion;
     static HavocConfig config;
@@ -27,6 +33,11 @@ public class Utils {
         Utils.plugin = plugin;
         logger = new Logger(plugin);
         messageUtils = new MessageUtils(plugin);
+
+        cer = RegistryUtils.newEntityRegistry(plugin);
+
+        for(HauntedEntities e : HauntedEntities.values())
+            e.register(cer);
 
 
         occasion = new HauntedOccasion(plugin, "occastion_data");
@@ -56,6 +67,9 @@ public class Utils {
 
         new CommandManager.CommandBuilder("hauntedhavoc", new HauntedHavocCommand()).setAliases("hh").setDescription("Main command for Haunted Havoc").register(plugin);
 
+    }
+    public static CustomEntityRegistry getCustomEntityRegistry(){
+        return cer;
     }
 
     public static HavocConfig getConfig(){

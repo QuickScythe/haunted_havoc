@@ -6,10 +6,14 @@ import me.quickscythe.shadowcore.utils.ShadowUtils;
 import me.quickscythe.shadowcore.utils.chat.Logger;
 import me.quickscythe.shadowcore.utils.team.Team;
 import me.quickscythe.shadowcore.utils.team.TeamManager;
+import me.quickscythe.shadowutils.entities.CustomZombie;
 import me.quickscythe.shadowutils.utils.Utils;
 import net.kyori.adventure.text.format.NamedTextColor;
+import net.minecraft.world.level.Level;
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.craftbukkit.CraftWorld;
 import org.jetbrains.annotations.NotNull;
 
 public class HauntedHavocCommand  implements ShadowCommand {
@@ -20,13 +24,16 @@ public class HauntedHavocCommand  implements ShadowCommand {
             // Also check perms prob?
             return;
         }
-        if(args[0].equalsIgnoreCase("teams") || args[0].equalsIgnoreCase("team")){
+        if(args[0].equalsIgnoreCase("teams") || args[0].equalsIgnoreCase("team")) {
             //TODO
             // /hh teams create <team>
             // /hh teams edit <team> setcolor <color>
             // /hh teams edit <team> addmember <member>
             // /hh teams edit <team> removemember <member>
             if(args.length == 1){
+                Location location = stack.getLocation();
+//                Utils.spawnZombie(location);
+                Utils.getCustomEntityRegistry().spawn("customzombie", location);
                 //TODO send list of options
                 return;
             }

@@ -30,7 +30,7 @@ public class BloodSplat {
         final BlockType block = registry.getOrThrow(TypedKey.create(RegistryKey.BLOCK, Key.key("minecraft:redstone_block")));
         BlockData data = block.createBlockData();
         for (int i = 0; i <= loops; i++) {
-            loc.getWorld().spawnParticle(Particle.BLOCK, loc.getX(), loc.getY(), loc.getZ(), 1, 0, 0, 0, data);
+            loc.getWorld().spawnParticle(Particle.BLOCK, loc.getX(), loc.getY(), loc.getZ(), 10, 0, 0, 0, data);
             double x = (r.nextBoolean() ? 1 : -1) * ((radius > 0 ? r.nextInt(radius) : 0) + r.nextDouble());
             double z = (r.nextBoolean() ? 1 : -1) * ((radius > 0 ? r.nextInt(radius) : 0) + r.nextDouble());
             Location splat_loc = loc.clone().add(x, radius, z);

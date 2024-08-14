@@ -1,14 +1,17 @@
-
+import xyz.jpenilla.resourcefactory.bukkit.BukkitPluginYaml
 
 plugins {
-    id 'java'
+    id 'java-library'
     id 'maven-publish'
+    id ("io.papermc.paperweight.userdev") version "1.7.2"
+    id("xyz.jpenilla.run-paper") version "2.3.0" // Adds runServer and runMojangMappedServer tasks for testing
+    id("xyz.jpenilla.resource-factory-bukkit-convention") version "1.1.1"
 }
 repositories {
 
     mavenCentral()
     maven { url "https://jitpack.io" }
-    maven { url = 'https://maven.maxhenkel.de/repository/public' }
+    maven { url = 'https://maven.maxhenkel.de/repository/public/' }
     maven {
         name = "papermc-repo"
         url = "https://repo.papermc.io/repository/maven-public/"
@@ -17,14 +20,24 @@ repositories {
         name = "sonatype"
         url = "https://oss.sonatype.org/content/groups/public/"
     }
+    maven {
+        name = "shadow_collective"
+        url = "https://repo.vanillaflux.com/repository/shadow_collective/"
+    }
 
 }
 
 dependencies {
-    compileOnly("io.papermc.paper:paper-api:1.21-R0.1-SNAPSHOT")
-    implementation "com.github.QuickScythe:shadow_utils:${project.shadow_utils_version}"
+//    compileOnly("io.papermc.paper:paper-api:${minecraft_version}-${paper_build}")
+
+    implementation("com.github.QuickScythe:shadow_utils:${shadow_utils_version}")
+
+//    implementation "com.github.QuickScythe:shadow_utils:${project.shadow_utils_version}"
+    paperweight.paperDevBundle("${minecraft_version}-${paper_build}")
 
 }
+
+
 
 def targetJavaVersion = 21
 java {
@@ -38,6 +51,7 @@ java {
     }
 }
 
+
 tasks.withType(JavaCompile).configureEach {
     options.encoding = 'UTF-8'
 
@@ -45,6 +59,11 @@ tasks.withType(JavaCompile).configureEach {
         options.release.set(targetJavaVersion)
     }
 }
+
+tasks.assemble {
+    dependsOn(tasks.reobfJar)
+}
+
 
 processResources {
     def props = [version: version,name: rootProject.name]
@@ -60,4 +79,12 @@ publishing {
             from components.java
         }
     }
+}
+// Configure plugin.yml generation
+// - name, version, and description are inherited from the Gradle project.
+bukkitPluginYaml {
+    main.set("me.quickscythe.shadowutils.HauntedHavoc")
+    load.set(BukkitPluginYaml.PluginLoadOrder.STARTUP)
+    authors.add("${author}")
+    apiVersion.set("1.21")
 }
