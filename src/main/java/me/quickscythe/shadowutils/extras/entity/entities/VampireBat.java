@@ -1,4 +1,4 @@
-package me.quickscythe.shadowutils.extras.entity;
+package me.quickscythe.shadowutils.extras.entity.entities;
 
 import me.quickscythe.shadowutils.extras.entity.pathfinding.CustomAttackGoal;
 import me.quickscythe.shadowutils.utils.Utils;
@@ -28,7 +28,7 @@ import org.bukkit.event.entity.EntityTargetEvent;
 import javax.annotation.Nullable;
 import java.util.EnumSet;
 
-public class VampireBat extends Bat implements CustomEntity {
+public class VampireBat extends Bat {
 
     public VampireBat(Level world) {
         super(EntityType.BAT, world);

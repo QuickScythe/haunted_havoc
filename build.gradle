@@ -32,9 +32,10 @@ repositories {
 }
 
 dependencies {
+    implementation "com.github.QuickScythe:shadow_utils:${shadow_utils_version}:${shadow_utils_build}"
 //    compileOnly("io.papermc.paper:paper-api:${minecraft_version}-${paper_build}")
 
-    implementation("com.github.QuickScythe:shadow_utils:${shadow_utils_version}:${shadow_utils_build}")
+//
     implementation "de.maxhenkel.voicechat:voicechat-api:${voicechat_api_version}"
 //    implementation "com.github.QuickScythe:shadow_utils:${project.shadow_utils_version}"
     paperweight.paperDevBundle("${minecraft_version}-${paper_build}")

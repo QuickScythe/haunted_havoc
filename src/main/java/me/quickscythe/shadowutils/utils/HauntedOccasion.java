@@ -79,9 +79,6 @@ public class HauntedOccasion extends ConfigClass implements Occasion {
                 assert player != null;
                 Utils.getVoiceService().getServerApi().getConnectionOf(uid).setGroup(vc);
                 int team_teleport_radius = Utils.getConfig().getData().getInt("team_teleport_radius");
-
-//                Utils.getVoiceService().getServerApi().getConnectionOf(uid).setGroup(null);
-
                 player.teleportAsync(loc.getWorld().getHighestBlockAt(loc.clone().add(random.nextInt(team_teleport_radius), 0, random.nextInt(team_teleport_radius))).getLocation().clone().add(0, 1, 0)).thenAccept(success -> {
                     if (success) {
                         player.sendMessage("Teleport success");

@@ -3,15 +3,10 @@ package me.quickscythe.shadowutils.listeners;
 import io.papermc.paper.event.player.AsyncChatEvent;
 import me.quickscythe.shadowcore.utils.ShadowUtils;
 import me.quickscythe.shadowcore.utils.team.Team;
-import me.quickscythe.shadowcore.utils.team.TeamManager;
 import me.quickscythe.shadowutils.extras.blood.BloodSplat;
-import me.quickscythe.shadowutils.extras.entity.CustomEntity;
-import me.quickscythe.shadowutils.extras.entity.CustomZombie;
-import me.quickscythe.shadowutils.extras.entity.HauntedEntities;
 import me.quickscythe.shadowutils.utils.Utils;
 import net.kyori.adventure.text.Component;
 import org.bukkit.GameMode;
-import org.bukkit.craftbukkit.entity.CraftEntity;
 import org.bukkit.craftbukkit.entity.CraftZombie;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
@@ -23,8 +18,10 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntitySpawnEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Random;
+import java.util.Set;
 
 public class ServerInteractionListener implements Listener {
 
@@ -50,7 +47,10 @@ public class ServerInteractionListener implements Listener {
     public void onEntitySpawn(EntitySpawnEvent e) {
         if (e.getEntity() instanceof TextDisplay || e.getEntity() instanceof Item) return;
 //        if(Utils.getOccasion().started()){
-        if (new Random().nextDouble() < 0.1) if (!(((CraftEntity) e.getEntity()).getHandle() instanceof CustomEntity)) {
+        if (new Random().nextDouble() < 0.5) {
+            Set<String> keys = Utils.getEntityRegistry().getRegistry().keySet();
+            String key = keys.toArray(keys.toArray(new String[keys.size()]))[new Random().nextInt(keys.size())];
+            Utils.getEntityRegistry().spawn(key, e.getLocation());
 //            HauntedEntities.values()[HauntedEntities.values().length - 1].spawn(e.getLocation());
         }
 //        }
@@ -60,17 +60,21 @@ public class ServerInteractionListener implements Listener {
 
     @EventHandler
     public void onEntityDamage(EntityDamageEvent e) {
-        if (e.getEntity() instanceof CraftZombie) {
-            Utils.getLogger().log("Found craft Zom");
-            if (((CraftZombie) e.getEntity()).getHandle() instanceof CustomZombie) {
-                Utils.getLogger().log("Custom Zom!");
-            }
+        if(!Utils.getOccasion().started()){
+            e.setDamage(0);
+            return;
         }
+//        if (e.getEntity() instanceof CraftZombie) {
+//            Utils.getLogger().log("Found craft Zom");
+//            if (((CraftZombie) e.getEntity()).getHandle() instanceof CustomZombie) {
+//                Utils.getLogger().log("Custom Zom!");
+//            }
+//        }
         new BloodSplat(e.getEntity().getLocation(), e.getDamage());
     }
 
     @EventHandler
-    public void onEntityDamageEntity(EntityDamageByEntityEvent e) {
+    public void onEntityDamageEntity(@NotNull EntityDamageByEntityEvent e) {
         if (e.getDamager() instanceof Player damager && e.getEntity() instanceof Player player) {
             if (Utils.getOccasion().inGracePeriod()) e.setCancelled(true);
         }
@@ -78,6 +82,8 @@ public class ServerInteractionListener implements Listener {
 
     @EventHandler
     public void onPlayerDeath(PlayerDeathEvent e) {
+
+//        if(ShadowUtils.getTeamManager().getTeam(e.getPlayer()) == null)
         Team t = null;
         for (Team team : ShadowUtils.getTeamManager().getTeams()) {
             if (team.getPlayers().contains(e.getPlayer().getUniqueId())) {

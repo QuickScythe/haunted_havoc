@@ -1,21 +1,16 @@
 package me.quickscythe.shadowutils.utils;
 
-import com.mojang.brigadier.Message;
 import me.quickscythe.shadowcore.commands.CommandManager;
-import me.quickscythe.shadowcore.utils.RegistryUtils;
+import me.quickscythe.shadowcore.utils.entity.RegistryUtils;
 import me.quickscythe.shadowcore.utils.ShadowUtils;
 import me.quickscythe.shadowcore.utils.chat.Logger;
 import me.quickscythe.shadowcore.utils.chat.MessageUtils;
 import me.quickscythe.shadowcore.utils.entity.CustomEntityRegistry;
-import me.quickscythe.shadowcore.utils.entity.CustomZombie;
-import me.quickscythe.shadowcore.utils.heartbeat.HeartbeatUtils;
-import me.quickscythe.shadowcore.utils.team.TeamManager;
 import me.quickscythe.shadowutils.HauntedHavoc;
 import me.quickscythe.shadowutils.commands.HauntedHavocCommand;
-import me.quickscythe.shadowutils.extras.entity.HauntedEntities;
+import me.quickscythe.shadowutils.extras.entity.entities.HauntedEntities;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.*;
-import org.bukkit.plugin.java.JavaPlugin;
 
 public class Utils {
 
@@ -67,7 +62,7 @@ public class Utils {
 
         ShadowUtils.getTeamManager().registerTeam("spectators").setColor(NamedTextColor.GRAY);
 
-        new CommandManager.CommandBuilder("hauntedhavoc", new HauntedHavocCommand()).setAliases("hh").setDescription("Main command for Haunted Havoc").register(plugin);
+        new CommandManager.CommandBuilder(new HauntedHavocCommand(plugin)).setAliases("hh").setDescription("Main command for Haunted Havoc").register();
 
         voiceService = new HauntedVoiceService();
         ShadowUtils.registerVoiceService(voiceService);
