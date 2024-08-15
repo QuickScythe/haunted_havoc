@@ -41,6 +41,9 @@ public class HauntedHavocCommand extends ShadowCommand {
                             if(sub_cmd.equalsIgnoreCase("teams") || sub_cmd.equalsIgnoreCase("team")){
                                 //todo send feedback
                             }
+                            if(sub_cmd.equalsIgnoreCase("start") ){
+                                Utils.getOccasion().start();
+                            }
                             return Command.SINGLE_SUCCESS;
                         })).build();
     }
