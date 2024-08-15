@@ -77,7 +77,8 @@ public class HauntedOccasion extends ConfigClass implements Occasion {
                 if (Bukkit.getPlayer(uid) == null) continue;
                 Player player = Bukkit.getPlayer(uid);
                 assert player != null;
-                Utils.getVoiceService().getServerApi().getConnectionOf(uid).setGroup(vc);
+                if (Utils.getVoiceService().getServerApi() != null)
+                    Utils.getVoiceService().getServerApi().getConnectionOf(uid).setGroup(vc);
                 int team_teleport_radius = Utils.getConfig().getData().getInt("team_teleport_radius");
                 player.teleportAsync(loc.getWorld().getHighestBlockAt(loc.clone().add(random.nextInt(team_teleport_radius), 0, random.nextInt(team_teleport_radius))).getLocation().clone().add(0, 1, 0)).thenAccept(success -> {
                     if (success) {
