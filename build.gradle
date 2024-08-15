@@ -1,12 +1,16 @@
-import xyz.jpenilla.resourcefactory.bukkit.BukkitPluginYaml
+import io.papermc.paperweight.userdev.ReobfArtifactConfiguration
+
+//import xyz.jpenilla.resourcefactory.bukkit.BukkitPluginYaml
 
 plugins {
     id 'java-library'
     id 'maven-publish'
     id ("io.papermc.paperweight.userdev") version "1.7.2"
     id("xyz.jpenilla.run-paper") version "2.3.0" // Adds runServer and runMojangMappedServer tasks for testing
-    id("xyz.jpenilla.resource-factory-bukkit-convention") version "1.1.1"
+//    id("xyz.jpenilla.resource-factory-bukkit-convention") version "1.1.1"
 }
+paperweight.reobfArtifactConfiguration = ReobfArtifactConfiguration.getMOJANG_PRODUCTION()
+
 repositories {
 
     mavenCentral()
@@ -30,13 +34,12 @@ repositories {
 dependencies {
 //    compileOnly("io.papermc.paper:paper-api:${minecraft_version}-${paper_build}")
 
-    implementation("com.github.QuickScythe:shadow_utils:${shadow_utils_version}")
-
+    implementation("com.github.QuickScythe:shadow_utils:${shadow_utils_version}:${shadow_utils_build}")
+    implementation "de.maxhenkel.voicechat:voicechat-api:${voicechat_api_version}"
 //    implementation "com.github.QuickScythe:shadow_utils:${project.shadow_utils_version}"
     paperweight.paperDevBundle("${minecraft_version}-${paper_build}")
 
 }
-
 
 
 def targetJavaVersion = 21
@@ -60,10 +63,6 @@ tasks.withType(JavaCompile).configureEach {
     }
 }
 
-tasks.assemble {
-    dependsOn(tasks.reobfJar)
-}
-
 
 processResources {
     def props = [version: version,name: rootProject.name]
@@ -79,12 +78,4 @@ publishing {
             from components.java
         }
     }
-}
-// Configure plugin.yml generation
-// - name, version, and description are inherited from the Gradle project.
-bukkitPluginYaml {
-    main.set("me.quickscythe.shadowutils.HauntedHavoc")
-    load.set(BukkitPluginYaml.PluginLoadOrder.STARTUP)
-    authors.add("${author}")
-    apiVersion.set("1.21")
 }

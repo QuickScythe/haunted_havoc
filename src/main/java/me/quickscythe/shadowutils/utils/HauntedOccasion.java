@@ -1,5 +1,7 @@
 package me.quickscythe.shadowutils.utils;
 
+import de.maxhenkel.voicechat.api.Group;
+import me.quickscythe.shadowcore.utils.ShadowUtils;
 import me.quickscythe.shadowcore.utils.config.ConfigClass;
 import me.quickscythe.shadowcore.utils.occasion.Occasion;
 import me.quickscythe.shadowcore.utils.occasion.OccasionManager;
@@ -8,6 +10,7 @@ import me.quickscythe.shadowcore.utils.team.TeamManager;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -22,18 +25,15 @@ import java.util.concurrent.TimeUnit;
 public class HauntedOccasion extends ConfigClass implements Occasion {
 
     private final int MAX_PHASES = 5;
-    private int phase = 0;
     long last_check = 0;
+    private int phase = 0;
 
 
     public HauntedOccasion(JavaPlugin plugin, String configFile) {
         super(plugin, configFile);
-        if (!getConfig().getData().has("end"))
-            getConfig().getData().put("end", false);
-        if (!getConfig().getData().has("started_time"))
-            getConfig().getData().put("started_time", 0);
-        if (!getConfig().getData().has("started"))
-            getConfig().getData().put("started", false);
+        if (!getConfig().getData().has("end")) getConfig().getData().put("end", false);
+        if (!getConfig().getData().has("started_time")) getConfig().getData().put("started_time", 0);
+        if (!getConfig().getData().has("started")) getConfig().getData().put("started", false);
 
         OccasionManager.registerOccasion("test", this);
     }
@@ -46,16 +46,10 @@ public class HauntedOccasion extends ConfigClass implements Occasion {
     @Override
     public boolean start() {
 
-        for(Player player : Bukkit.getOnlinePlayers()){
-            boolean onTeam = false;
-            for(Team team : TeamManager.getTeams()){
-                if(team.getPlayers().contains(player.getUniqueId())){
-                    onTeam = true;
-                    break;
-                }
-            }
-            if(!onTeam){
-                TeamManager.getTeam("spectators").addPlayer(player);
+        TeamManager teamManager = ShadowUtils.getTeamManager();
+        for (Player player : Bukkit.getOnlinePlayers()) {
+            if (teamManager.getTeam(player) != null) {
+                teamManager.getTeam("spectators").addPlayer(player);
             }
         }
 
@@ -67,19 +61,32 @@ public class HauntedOccasion extends ConfigClass implements Occasion {
         Utils.getWorld().getWorldBorder().setSize(world_border);
 
         Random random = new Random();
-        for(Team team : TeamManager.getTeams()){
-            Location loc = new Location(Utils.getWorld(), random.nextInt((int) world_border), 100, random.nextInt((int) world_border));
+        int radius = (int) (world_border / 2);
+        for (Team team : teamManager.getTeams()) {
+            Group vc = Utils.getVoiceService().getServerApi().groupBuilder().setType(Group.Type.OPEN).setPersistent(false).setHidden(true).setName(team.getName() + " chat").build();
+            Location loc = Utils.getWorld().getWorldBorder().getCenter().clone();
+            loc.add((random.nextBoolean() ? 1 : -1) * random.nextInt(radius), 0, (random.nextBoolean() ? 1 : -1) * random.nextInt(radius));
             loc = loc.getWorld().getHighestBlockAt(loc).getLocation().clone();
-            for(UUID uid : team.getPlayers()){
-                if(Bukkit.getPlayer(uid) == null) continue;
+            while (loc.getBlock().getType().equals(Material.AIR) || loc.getBlock().getType().equals(Material.WATER)) {
+                loc = Utils.getWorld().getWorldBorder().getCenter().clone();
+                loc.add((random.nextBoolean() ? 1 : -1) * world_border, 0, (random.nextBoolean() ? 1 : -1) * world_border);
+                loc = loc.getWorld().getHighestBlockAt(loc).getLocation().clone();
+            }
+
+            for (UUID uid : team.getPlayers()) {
+                if (Bukkit.getPlayer(uid) == null) continue;
                 Player player = Bukkit.getPlayer(uid);
                 assert player != null;
-                int radius = Utils.getConfig().getData().getInt("team_teleport_radius");
+                Utils.getVoiceService().getServerApi().getConnectionOf(uid).setGroup(vc);
+                int team_teleport_radius = Utils.getConfig().getData().getInt("team_teleport_radius");
 
+//                Utils.getVoiceService().getServerApi().getConnectionOf(uid).setGroup(null);
 
-                player.teleportAsync(loc.getWorld().getHighestBlockAt(loc.clone().add(random.nextInt(radius), 0 , random.nextInt(radius))).getLocation().clone().add(0,1,0)).thenAccept(success -> {
-                    if(success){
-                        player.sendMessage(Utils.getMessageUtils().getMessage("hh.msg.teleport.success"));
+                player.teleportAsync(loc.getWorld().getHighestBlockAt(loc.clone().add(random.nextInt(team_teleport_radius), 0, random.nextInt(team_teleport_radius))).getLocation().clone().add(0, 1, 0)).thenAccept(success -> {
+                    if (success) {
+                        player.sendMessage("Teleport success");
+                    } else {
+                        player.sendMessage("There was an error teleporting you");
                     }
                 });
             }
@@ -109,8 +116,8 @@ public class HauntedOccasion extends ConfigClass implements Occasion {
 
         if (current < duration + delay) {
             if (current > delay) {
-                int phase = (int) (Math.floor((double) current /((double) duration /MAX_PHASES)))-(MAX_PHASES-1);
-                if(this.phase != phase){
+                int phase = (int) (Math.floor((double) current / ((double) duration / MAX_PHASES))) - (MAX_PHASES - 1);
+                if (this.phase != phase) {
                     this.phase = phase;
                     Utils.getLogger().log("Moving on to phase " + phase);
                 }
@@ -154,11 +161,11 @@ public class HauntedOccasion extends ConfigClass implements Occasion {
         return current < delay;
     }
 
-    public int getPhase(){
+    public int getPhase() {
         return phase;
     }
 
-    public int getMoonPhase(World world){
-        return (int) ((world.getFullTime()/24000)%8);
+    public int getMoonPhase(World world) {
+        return (int) ((world.getFullTime() / 24000) % 8);
     }
 }

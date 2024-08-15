@@ -33,8 +33,11 @@ public class BloodSplat {
             loc.getWorld().spawnParticle(Particle.BLOCK, loc.getX(), loc.getY(), loc.getZ(), 10, 0, 0, 0, data);
             double x = (r.nextBoolean() ? 1 : -1) * ((radius > 0 ? r.nextInt(radius) : 0) + r.nextDouble());
             double z = (r.nextBoolean() ? 1 : -1) * ((radius > 0 ? r.nextInt(radius) : 0) + r.nextDouble());
-            Location splat_loc = loc.clone().add(x, radius, z);
-            while (splat_loc.clone().add(0, -1, 0).getBlock().getType().equals(Material.AIR)) splat_loc.add(0, -1, 0);
+            Location splat_loc = loc.clone().add(x, 0, z);
+            splat_loc.setY(splat_loc.getBlockY() + radius);
+            while (!splat_loc.clone().add(0, -1, 0).getBlock().isSolid()) {
+                splat_loc.add(0, -1, 0);
+            }
             splat_loc.add(0, 0.01, 0);
             splat_loc.setPitch(-90);
             TextDisplay splat = loc.getWorld().spawn(splat_loc, TextDisplay.class);
