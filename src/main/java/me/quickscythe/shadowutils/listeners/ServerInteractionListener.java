@@ -4,10 +4,11 @@ import io.papermc.paper.event.player.AsyncChatEvent;
 import me.quickscythe.shadowcore.utils.ShadowUtils;
 import me.quickscythe.shadowcore.utils.team.Team;
 import me.quickscythe.shadowutils.extras.blood.BloodSplat;
+import me.quickscythe.shadowutils.extras.entity.entities.HauntedArmor;
 import me.quickscythe.shadowutils.utils.Utils;
 import net.kyori.adventure.text.Component;
 import org.bukkit.GameMode;
-import org.bukkit.craftbukkit.entity.CraftZombie;
+import org.bukkit.craftbukkit.entity.CraftEntity;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.TextDisplay;
@@ -47,7 +48,7 @@ public class ServerInteractionListener implements Listener {
     public void onEntitySpawn(EntitySpawnEvent e) {
         if (e.getEntity() instanceof TextDisplay || e.getEntity() instanceof Item) return;
 //        if(Utils.getOccasion().started()){
-        if (new Random().nextDouble() < 0.5) {
+        if (new Random().nextDouble() < 0.01) {
             Set<String> keys = Utils.getEntityRegistry().getRegistry().keySet();
             String key = keys.toArray(keys.toArray(new String[keys.size()]))[new Random().nextInt(keys.size())];
             Utils.getEntityRegistry().spawn(key, e.getLocation());
@@ -60,17 +61,20 @@ public class ServerInteractionListener implements Listener {
 
     @EventHandler
     public void onEntityDamage(EntityDamageEvent e) {
-        if(!Utils.getOccasion().started()){
+        if (!Utils.getOccasion().started()) {
             e.setDamage(0);
             return;
         }
+        boolean splat = true;
+        if (((CraftEntity) e.getEntity()).getHandle() instanceof HauntedArmor) splat = false;
+
 //        if (e.getEntity() instanceof CraftZombie) {
 //            Utils.getLogger().log("Found craft Zom");
 //            if (((CraftZombie) e.getEntity()).getHandle() instanceof CustomZombie) {
 //                Utils.getLogger().log("Custom Zom!");
 //            }
 //        }
-        new BloodSplat(e.getEntity().getLocation(), e.getDamage());
+        if (splat) new BloodSplat(e.getEntity().getLocation(), e.getDamage());
     }
 
     @EventHandler

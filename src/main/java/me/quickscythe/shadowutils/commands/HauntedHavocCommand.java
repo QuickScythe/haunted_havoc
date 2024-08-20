@@ -35,9 +35,14 @@ public class HauntedHavocCommand extends ShadowCommand {
         return Commands.literal(getName()).executes(context -> {
             //todo send message of avalible commands
             return Command.SINGLE_SUCCESS;})
-                .then(argument("subCmd", StringArgumentType.string())
+                .then(argument("arg1", StringArgumentType.string())
+                        .suggests((context, builder) -> {
+                            builder.suggest("teams");
+                            builder.suggest("start");
+                            return builder.buildFuture();
+                        })
                         .executes(context -> {
-                            String sub_cmd = StringArgumentType.getString(context, "subCmd");
+                            String sub_cmd = StringArgumentType.getString(context, "arg1");
                             if(sub_cmd.equalsIgnoreCase("teams") || sub_cmd.equalsIgnoreCase("team")){
                                 //todo send feedback
                             }
@@ -45,7 +50,47 @@ public class HauntedHavocCommand extends ShadowCommand {
                                 Utils.getOccasion().start();
                             }
                             return Command.SINGLE_SUCCESS;
-                        })).build();
+                        })
+                        .then(argument("arg2", StringArgumentType.string())
+                                .suggests((context, builder) -> {
+                                    String arg1 = context.getArgument("arg1", String.class);
+                                    if(arg1.equalsIgnoreCase("teams") || arg1.equalsIgnoreCase("team")){
+                                        builder.suggest("create");
+                                        builder.suggest("edit");
+                                    }
+                                    return builder.buildFuture();
+                                })
+                                .executes(context -> {
+                                    return Command.SINGLE_SUCCESS;
+                                })
+                                .then(argument("arg3", StringArgumentType.string())
+                                        .suggests((context, builder) -> {
+                                            String arg1 = StringArgumentType.getString(context, "arg1");
+                                            String arg2 = StringArgumentType.getString(context, "arg2");
+                                            if(arg1.equalsIgnoreCase("teams") || arg1.equalsIgnoreCase("team")){
+                                                if(arg2.equalsIgnoreCase("edit")){
+                                                    for(Team team : ShadowUtils.getTeamManager().getTeams())
+                                                        builder.suggest(team.getName());
+                                                }
+                                            }
+                                            return builder.buildFuture();
+                                        })
+                                        .executes(context -> {
+                                            String arg1 = StringArgumentType.getString(context, "arg1");
+                                            String arg2 = StringArgumentType.getString(context, "arg2");
+                                            if(arg1.equalsIgnoreCase("team") || arg1.equalsIgnoreCase("teams")){
+                                                if(arg2.equalsIgnoreCase("create")){
+                                                    String teamName = StringArgumentType.getString(context, "arg3");
+                                                    ShadowUtils.getTeamManager().registerTeam(teamName);
+                                                    Utils.getLogger().log(Logger.LogLevel.INFO, "Team " + teamName + " has been created", context.getSource().getSender());
+                                                }
+                                                if(arg2.equalsIgnoreCase("edit")){
+
+                                                    //TODO send feedback
+                                                }
+                                            }
+                                            return Command.SINGLE_SUCCESS;
+                                        })))).build();
     }
 
 //    @Override

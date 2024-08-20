@@ -34,8 +34,7 @@ public class VampireBat extends Bat {
         super(EntityType.BAT, world);
 
         ((CraftBat) getBukkitEntity()).registerAttribute(Attribute.GENERIC_ATTACK_DAMAGE);
-
-        ((CraftBat) getBukkitEntity()).getAttribute(Attribute.GENERIC_ATTACK_DAMAGE).setBaseValue(5);
+        ((CraftBat) getBukkitEntity()).getAttribute(Attribute.GENERIC_ATTACK_DAMAGE).setBaseValue(2.5);
 
     }
 
