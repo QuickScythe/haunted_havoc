@@ -10,17 +10,12 @@ import me.quickscythe.shadowcore.utils.ShadowUtils;
 import me.quickscythe.shadowcore.utils.chat.Logger;
 import me.quickscythe.shadowcore.utils.team.Team;
 import me.quickscythe.shadowutils.utils.Utils;
-import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
-import net.minecraft.commands.execution.CustomCommandExecutor;
 import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.OfflinePlayer;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
-import java.util.Collection;
+import java.util.UUID;
 
 import static io.papermc.paper.command.brigadier.Commands.argument;
 
@@ -33,8 +28,9 @@ public class HauntedHavocCommand extends ShadowCommand {
     @Override
     public LiteralCommandNode<CommandSourceStack> getNode() {
         return Commands.literal(getName()).executes(context -> {
-            //todo send message of avalible commands
-            return Command.SINGLE_SUCCESS;})
+                    //todo send message of avalible commands
+                    return Command.SINGLE_SUCCESS;
+                })
                 .then(argument("arg1", StringArgumentType.string())
                         .suggests((context, builder) -> {
                             builder.suggest("teams");
@@ -43,18 +39,19 @@ public class HauntedHavocCommand extends ShadowCommand {
                         })
                         .executes(context -> {
                             String sub_cmd = StringArgumentType.getString(context, "arg1");
-                            if(sub_cmd.equalsIgnoreCase("teams") || sub_cmd.equalsIgnoreCase("team")){
+                            if (sub_cmd.equalsIgnoreCase("teams") || sub_cmd.equalsIgnoreCase("team")) {
                                 //todo send feedback
                             }
-                            if(sub_cmd.equalsIgnoreCase("start") ){
+                            if (sub_cmd.equalsIgnoreCase("start")) {
                                 Utils.getOccasion().start();
                             }
                             return Command.SINGLE_SUCCESS;
                         })
                         .then(argument("arg2", StringArgumentType.string())
                                 .suggests((context, builder) -> {
-                                    String arg1 = context.getArgument("arg1", String.class);
-                                    if(arg1.equalsIgnoreCase("teams") || arg1.equalsIgnoreCase("team")){
+                                    String[] args = context.getInput().split(" ");
+                                    String arg1 = args[1];
+                                    if (arg1.equalsIgnoreCase("teams") || arg1.equalsIgnoreCase("team")) {
                                         builder.suggest("create");
                                         builder.suggest("edit");
                                     }
@@ -65,11 +62,12 @@ public class HauntedHavocCommand extends ShadowCommand {
                                 })
                                 .then(argument("arg3", StringArgumentType.string())
                                         .suggests((context, builder) -> {
-                                            String arg1 = StringArgumentType.getString(context, "arg1");
-                                            String arg2 = StringArgumentType.getString(context, "arg2");
-                                            if(arg1.equalsIgnoreCase("teams") || arg1.equalsIgnoreCase("team")){
-                                                if(arg2.equalsIgnoreCase("edit")){
-                                                    for(Team team : ShadowUtils.getTeamManager().getTeams())
+                                            String[] args = context.getInput().split(" ");
+                                            String arg1 = args[1];
+                                            String arg2 = args[2];
+                                            if (arg1.equalsIgnoreCase("teams") || arg1.equalsIgnoreCase("team")) {
+                                                if (arg2.equalsIgnoreCase("edit")) {
+                                                    for (Team team : ShadowUtils.getTeamManager().getTeams())
                                                         builder.suggest(team.getName());
                                                 }
                                             }
@@ -78,19 +76,98 @@ public class HauntedHavocCommand extends ShadowCommand {
                                         .executes(context -> {
                                             String arg1 = StringArgumentType.getString(context, "arg1");
                                             String arg2 = StringArgumentType.getString(context, "arg2");
-                                            if(arg1.equalsIgnoreCase("team") || arg1.equalsIgnoreCase("teams")){
-                                                if(arg2.equalsIgnoreCase("create")){
+                                            if (arg1.equalsIgnoreCase("team") || arg1.equalsIgnoreCase("teams")) {
+                                                if (arg2.equalsIgnoreCase("create")) {
                                                     String teamName = StringArgumentType.getString(context, "arg3");
                                                     ShadowUtils.getTeamManager().registerTeam(teamName);
                                                     Utils.getLogger().log(Logger.LogLevel.INFO, "Team " + teamName + " has been created", context.getSource().getSender());
                                                 }
-                                                if(arg2.equalsIgnoreCase("edit")){
+                                                if (arg2.equalsIgnoreCase("edit")) {
 
                                                     //TODO send feedback
                                                 }
                                             }
                                             return Command.SINGLE_SUCCESS;
-                                        })))).build();
+                                        })
+                                        .then(argument("arg4", StringArgumentType.string())
+                                                .suggests((context, builder) -> {
+                                                            String[] args = context.getInput().split(" ");
+                                                            if (args[1].equalsIgnoreCase("team") || args[1].equalsIgnoreCase("teams")) {
+                                                                if (args[2].equalsIgnoreCase("edit")) {
+                                                                    builder.suggest("setcolor");
+                                                                    builder.suggest("add");
+                                                                    builder.suggest("remove");
+                                                                }
+                                                            }
+                                                            return builder.buildFuture();
+                                                        }
+
+                                                )
+                                                .executes(context -> {
+
+                                                    return Command.SINGLE_SUCCESS;
+                                                })
+                                                .then(argument("arg5", StringArgumentType.string())
+                                                        .suggests((context, builder) -> {
+                                                            String[] args = context.getInput().split(" ");
+                                                            if (args[4].equalsIgnoreCase("setcolor")) {
+                                                                for (String color : NamedTextColor.NAMES.keys())
+                                                                    builder.suggest(color);
+                                                            }
+                                                            if (args[4].equalsIgnoreCase("add")) {
+                                                                for (Player player : Bukkit.getOnlinePlayers())
+                                                                    builder.suggest(player.getName());
+                                                            }
+                                                            if(args[4].equalsIgnoreCase("remove")){
+                                                                for(UUID uid : ShadowUtils.getTeamManager().getTeam(args[3]).getPlayers())
+                                                                    builder.suggest(Bukkit.getOfflinePlayer(uid).getName());
+                                                            }
+                                                            return builder.buildFuture();
+                                                        })
+                                                        .executes(context -> {
+                                                            String arg1 = StringArgumentType.getString(context, "arg1");
+                                                            String arg2 = StringArgumentType.getString(context, "arg2");
+                                                            String arg3 = StringArgumentType.getString(context, "arg3");
+                                                            String arg4 = StringArgumentType.getString(context, "arg4");
+                                                            String arg5 = StringArgumentType.getString(context, "arg5");
+                                                            if (arg1.equalsIgnoreCase("team") || arg1.equalsIgnoreCase("teams")) {
+                                                                if (arg2.equalsIgnoreCase("edit")) {
+                                                                    if (arg4.equalsIgnoreCase("setcolor")) {
+                                                                        Team team = ShadowUtils.getTeamManager().getTeam(arg3);
+                                                                        if (team == null) {
+                                                                            Utils.getLogger().log(Logger.LogLevel.ERROR, "That team doesn't exist", context.getSource().getSender());
+                                                                            return Command.SINGLE_SUCCESS;
+                                                                        }
+                                                                        for(String s : NamedTextColor.NAMES.keys()) {
+                                                                            System.out.println(s);
+                                                                        }
+                                                                        team.setColor(NamedTextColor.NAMES.valueOr(arg5.toLowerCase(), NamedTextColor.DARK_GRAY));
+                                                                        Utils.getLogger().log(Logger.LogLevel.INFO, "Team " + team.getName() + " color set to " + arg5, context.getSource().getSender());
+                                                                    }
+                                                                    if (arg4.equalsIgnoreCase("add") || arg4.equalsIgnoreCase("remove")) {
+                                                                        Team team = ShadowUtils.getTeamManager().getTeam(arg3);
+                                                                        if (team == null) {
+                                                                            Utils.getLogger().log(Logger.LogLevel.ERROR, "That team doesn't exist", context.getSource().getSender());
+                                                                            return Command.SINGLE_SUCCESS;
+                                                                        }
+                                                                        Player player = Bukkit.getPlayer(arg5);
+                                                                        if (player == null) {
+                                                                            Utils.getLogger().log(Logger.LogLevel.ERROR, "That player doesn't exist", context.getSource().getSender());
+                                                                            return Command.SINGLE_SUCCESS;
+                                                                        }
+                                                                        if (arg4.equalsIgnoreCase("add")) {
+                                                                            team.addPlayer(player);
+                                                                            Utils.getLogger().log(Logger.LogLevel.INFO, player.getName() + " has been added to " + team.getName(), context.getSource().getSender());
+                                                                        }
+                                                                        if (arg4.equalsIgnoreCase("remove")) {
+                                                                            team.removePlayer(player);
+                                                                            Utils.getLogger().log(Logger.LogLevel.INFO, player.getName() + " has been removed from " + team.getName(), context.getSource().getSender());
+                                                                        }
+                                                                    }
+                                                                }
+                                                            }
+                                                            return Command.SINGLE_SUCCESS;
+                                                        })))))).build();
     }
 
 //    @Override
